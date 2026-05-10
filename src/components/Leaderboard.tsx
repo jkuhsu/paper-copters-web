@@ -96,10 +96,10 @@ function PaperPlanes() {
             animationFillMode: 'both, both',
           }}
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden>
             <path
               d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-              stroke="rgba(45,111,165,0.75)"
+              stroke="rgba(45,100,60,0.72)"
               strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -235,7 +235,7 @@ function PodiumCard({
         {entry ? (
           <>
             <Counter target={entry.bagCount} delay={riseDelay + 1.1} />{' '}
-            <span className="font-normal text-slate-400 text-sm">個</span>
+            <span className="font-normal text-slate-500 text-sm">個</span>
           </>
         ) : '—'}
       </motion.p>
@@ -304,20 +304,21 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
       className="relative min-h-screen overflow-x-hidden"
       style={{
         backgroundImage: 'url(/bg.jpg)',
-        backgroundSize: 'cover',
+        backgroundSize: '100% auto',
         backgroundPosition: 'center top',
-        backgroundAttachment: 'fixed',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: '#d2cbc2',
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       {/* Soft overlay so text stays readable over the vintage texture */}
-      <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
+      <div className="absolute inset-0 bg-white/20" />
 
       <FloatingBackground />
 
-      <div className="relative z-10 w-full max-w-lg mx-auto px-4 py-10 sm:py-14">
+      <div className="relative z-10 w-full max-w-lg mx-auto px-4 pt-24 pb-10 sm:pt-28 sm:pb-14">
 
         {/* Title */}
         <motion.header
@@ -329,20 +330,20 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
           <div className="inline-flex items-center justify-center gap-3 mb-2">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-                stroke="#2d6fa5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                stroke="#2a4d2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <h1
-              className="text-[1.75rem] sm:text-[2.25rem] font-black text-[#2d6fa5] tracking-wide leading-none"
+              className="text-[1.75rem] sm:text-[2.25rem] font-black text-[#1e3d22] tracking-wide leading-none"
               style={{ fontFamily: 'var(--font-serif)' }}
             >
               柳絮班級排行榜
             </h1>
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-                stroke="#2d6fa5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                stroke="#2a4d2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <p className="text-[#7ab0cc] text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase">
+          <p className="text-[#5a7a5a] text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase">
             Class Ranking Board
           </p>
         </motion.header>
@@ -368,12 +369,12 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
         {/* Rank list — scroll-triggered */}
         {rest.length > 0 && (
           <motion.div
-            className="rounded-3xl overflow-hidden border border-white/40"
+            className="rounded-3xl overflow-hidden border border-white/35"
             style={{
-              background: 'rgba(255,255,255,0.14)',
-              backdropFilter: 'blur(24px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-              boxShadow: 'inset 0 1.5px 0 rgba(255,255,255,0.72), 0 8px 32px rgba(0,0,0,0.13)',
+              background: 'rgba(255,255,255,0.10)',
+              backdropFilter: 'blur(24px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(160%)',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
             }}
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -397,7 +398,7 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
                 <span className="flex-1 text-slate-700 font-semibold">{displayName(item.className)}</span>
                 <span className="text-[#2d6fa5] font-bold tabular-nums text-base">
                   <Counter target={item.bagCount} delay={0.3 + idx * 0.07} />{' '}
-                  <span className="font-normal text-slate-400 text-sm">個</span>
+                  <span className="font-normal text-slate-500 text-sm">個</span>
                 </span>
               </motion.div>
             ))}

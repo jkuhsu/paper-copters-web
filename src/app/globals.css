@@ -26,17 +26,17 @@ body {
   100% { transform: translateY(112vh) translateX(0px)  rotate(-5deg);  opacity: 0;    }
 }
 
-/* Paper plane flight — left to right */
+/* Paper plane flight — left to right, slight upward diagonal */
 @keyframes fly-plane-ltr {
-  0%   { transform: translateX(-12vw) rotate(45deg); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
-  70%  { transform: translateX(112vw)  rotate(45deg); animation-timing-function: steps(1, end); }
-  100% { transform: translateX(-12vw)  rotate(45deg); }
+  0%   { transform: translateX(-12vw) translateY(24px)  rotate(38deg); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  70%  { transform: translateX(112vw)  translateY(-24px) rotate(38deg); animation-timing-function: steps(1, end); }
+  100% { transform: translateX(-12vw)  translateY(24px)  rotate(38deg); }
 }
-/* Paper plane flight — right to left */
+/* Paper plane flight — right to left, slight downward diagonal */
 @keyframes fly-plane-rtl {
-  0%   { transform: translateX(112vw) rotate(225deg); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
-  70%  { transform: translateX(-12vw)  rotate(225deg); animation-timing-function: steps(1, end); }
-  100% { transform: translateX(112vw)  rotate(225deg); }
+  0%   { transform: translateX(112vw) translateY(-24px) rotate(220deg); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  70%  { transform: translateX(-12vw)  translateY(24px)  rotate(220deg); animation-timing-function: steps(1, end); }
+  100% { transform: translateX(112vw)  translateY(-24px) rotate(220deg); }
 }
 /* Shared opacity envelope: fade-in → cruise → fade-out → invisible pause */
 @keyframes fly-plane-op {
