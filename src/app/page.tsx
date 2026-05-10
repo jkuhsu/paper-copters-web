@@ -1,10 +1,10 @@
-import { getClassRankings } from '@/lib/sheets';
+import { getClassRankings, type ClassScore } from '@/lib/sheets';
 import { Leaderboard } from '@/components/Leaderboard';
 
 export const revalidate = 60;
 
 export default async function Home() {
-  let rankings = [];
+  let rankings: ClassScore[] = [];
   let error = '';
 
   try {
