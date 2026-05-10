@@ -2,33 +2,16 @@
 
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
+import Image from 'next/image';
 
-// Catkin particles — hardcoded positions to avoid SSR hydration mismatch
+// Hardcoded catkin positions — avoids SSR hydration mismatch
 const CATKINS = [
-  { x: 8,  delay: 0.0, dur: 5.5, size: 1.1 },
-  { x: 20, delay: 1.3, dur: 6.0, size: 0.75 },
-  { x: 33, delay: 0.6, dur: 5.2, size: 1.0 },
-  { x: 47, delay: 2.0, dur: 6.3, size: 0.85 },
-  { x: 61, delay: 0.9, dur: 5.7, size: 1.2 },
-  { x: 74, delay: 1.7, dur: 5.4, size: 0.9 },
-  { x: 86, delay: 0.3, dur: 6.1, size: 0.8 },
-  { x: 14, delay: 2.8, dur: 5.8, size: 0.95 },
-  { x: 54, delay: 1.1, dur: 6.4, size: 0.7 },
-  { x: 92, delay: 2.4, dur: 5.6, size: 1.05 },
+  { x: 8,  delay: 0.0, dur: 8.5 }, { x: 20, delay: 1.4, dur: 10.0 },
+  { x: 34, delay: 0.7, dur: 9.2 }, { x: 48, delay: 2.2, dur: 8.8 },
+  { x: 62, delay: 1.0, dur: 9.6 }, { x: 75, delay: 1.8, dur: 8.3 },
+  { x: 88, delay: 0.4, dur: 10.2 },{ x: 14, delay: 3.1, dur: 9.0 },
+  { x: 55, delay: 4.5, dur: 8.7 }, { x: 93, delay: 2.7, dur: 9.4 },
 ];
-
-function CatkinSVG({ size }: { size: number }) {
-  const s = size;
-  return (
-    <svg width={16 * s} height={26 * s} viewBox="0 0 16 26" fill="none" aria-hidden>
-      <ellipse cx="8" cy="9" rx="7" ry="8.5" fill="rgba(180,220,245,0.75)" />
-      <ellipse cx="8" cy="9" rx="4" ry="5" fill="rgba(220,240,255,0.5)" />
-      <line x1="8" y1="17" x2="8" y2="26" stroke="rgba(140,190,220,0.5)" strokeWidth="1.2" />
-      <line x1="8" y1="20" x2="4.5" y2="24" stroke="rgba(140,190,220,0.35)" strokeWidth="0.9" />
-      <line x1="8" y1="23" x2="11.5" y2="26" stroke="rgba(140,190,220,0.35)" strokeWidth="0.9" />
-    </svg>
-  );
-}
 
 export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
@@ -40,57 +23,57 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
     <motion.div
       className="fixed inset-0 z-50 overflow-hidden flex flex-col items-center justify-center select-none"
       style={{
-        background: 'linear-gradient(150deg, #f7fcff 0%, #e8f6fb 45%, #daeef8 100%)',
+        background: 'linear-gradient(150deg, #f4fbf4 0%, #e8f6eb 40%, #daf0e0 100%)',
       }}
       exit={{ y: '-100%' }}
       transition={{ duration: 0.72, ease: [0.76, 0, 0.24, 1] }}
     >
       {/* Subtle grid */}
       <div
-        className="absolute inset-0 opacity-[0.06]"
+        className="absolute inset-0 opacity-[0.05]"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(30,100,180,1) 1px, transparent 1px), linear-gradient(90deg, rgba(30,100,180,1) 1px, transparent 1px)',
+            'linear-gradient(rgba(60,140,80,1) 1px,transparent 1px),linear-gradient(90deg,rgba(60,140,80,1) 1px,transparent 1px)',
           backgroundSize: '52px 52px',
         }}
       />
 
-      {/* Floating catkin seeds drifting upward */}
+      {/* Falling catkins (white/pale-green) */}
       {CATKINS.map((c, i) => (
-        <motion.div
+        <div
           key={i}
-          className="absolute bottom-0"
-          style={{ left: `${c.x}%` }}
-          animate={{
-            y: ['0vh', '-110vh'],
-            x: [0, i % 2 === 0 ? 18 : -18, 0],
-            opacity: [0, 0.85, 0.6, 0],
-            rotate: [0, i % 2 === 0 ? 15 : -12, 0],
+          className="absolute top-0 pointer-events-none"
+          style={{
+            left: `${c.x}%`,
+            animationName: 'fall-leaf',
+            animationDuration: `${c.dur}s`,
+            animationDelay: `${c.delay}s`,
+            animationTimingFunction: 'ease-in-out',
+            animationIterationCount: 'infinite',
+            animationFillMode: 'both',
           }}
-          transition={{ duration: c.dur, delay: c.delay, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <CatkinSVG size={c.size} />
-        </motion.div>
+          <Image
+            src="/catkin-white.svg"
+            alt=""
+            width={i % 3 === 0 ? 36 : i % 3 === 1 ? 28 : 32}
+            height={i % 3 === 0 ? 56 : i % 3 === 1 ? 44 : 50}
+            style={{ opacity: 0.75 }}
+            aria-hidden
+          />
+        </div>
       ))}
 
       {/* Center content */}
       <div className="relative z-10 flex flex-col items-center">
-        {/* Paper plane */}
+        {/* Catkin icon (replaces paper plane) */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.5, rotate: -20, y: 10 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+          initial={{ opacity: 0, scale: 0.5, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="mb-6"
         >
-          <svg width="58" height="58" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-              stroke="#2d6fa5"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <Image src="/catkin-green.svg" alt="柳絮" width={64} height={100} style={{ opacity: 0.85 }} />
         </motion.div>
 
         {/* Title */}
@@ -100,17 +83,17 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
           transition={{ duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-14"
         >
-          <p className="text-[#7ab0cc] text-[11px] sm:text-xs tracking-[0.35em] font-semibold mb-4 uppercase">
+          <p className="text-[#5a9a6a]/70 text-[11px] sm:text-xs tracking-[0.35em] font-semibold mb-4 uppercase">
             Songshan Senior High School
           </p>
           <h1
-            className="text-[#1a3a5c] text-[2.5rem] sm:text-5xl font-black tracking-tight leading-none mb-2"
+            className="text-[#1a4a2a] text-[2.5rem] sm:text-5xl font-black tracking-tight leading-none mb-2"
             style={{ fontFamily: 'var(--font-serif)' }}
           >
             松山高中
           </h1>
           <h2
-            className="text-[#2d6fa5] text-xl sm:text-2xl font-bold tracking-wide"
+            className="text-[#2d7a4a] text-xl sm:text-2xl font-bold tracking-wide"
             style={{ fontFamily: 'var(--font-serif)' }}
           >
             班級柳絮比賽
@@ -124,15 +107,14 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
           transition={{ delay: 0.5 }}
           className="w-52 sm:w-72"
         >
-          <div className="h-[5px] bg-[#b0d8ef]/40 rounded-full overflow-hidden">
+          <div className="h-[5px] bg-green-200/50 rounded-full overflow-hidden">
             <motion.div
               className="h-full rounded-full relative overflow-hidden"
-              style={{ background: 'linear-gradient(90deg, #38bdf8, #0ea5e9)' }}
+              style={{ background: 'linear-gradient(90deg, #4ade80, #22c55e)' }}
               initial={{ width: '0%' }}
               animate={{ width: '100%' }}
               transition={{ duration: 2.1, ease: [0.4, 0, 0.15, 1], delay: 0.4 }}
             >
-              {/* Shimmer */}
               <motion.div
                 className="absolute inset-y-0 w-14 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[-20deg]"
                 animate={{ x: ['-100%', '500%'] }}
@@ -141,7 +123,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
             </motion.div>
           </div>
           <motion.p
-            className="text-[#7ab0cc]/60 text-[10px] tracking-widest mt-2.5 text-center font-semibold"
+            className="text-[#5a9a6a]/50 text-[10px] tracking-widest mt-2.5 text-center font-semibold"
             animate={{ opacity: [0.4, 0.9, 0.4] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >

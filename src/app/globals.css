@@ -8,19 +8,26 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Falling catkin leaf animation */
+@keyframes fall-leaf {
+  0%   { transform: translateY(-90px) translateX(0px)  rotate(-8deg);  opacity: 0;    }
+  6%   {                                                                opacity: 0.82; }
+  25%  { transform: translateY(25vh)  translateX(28px)  rotate(11deg);               }
+  50%  { transform: translateY(50vh)  translateX(-18px) rotate(-7deg);               }
+  75%  { transform: translateY(76vh)  translateX(24px)  rotate(14deg);               }
+  93%  {                                                                opacity: 0.7;  }
+  100% { transform: translateY(112vh) translateX(0px)  rotate(-5deg);  opacity: 0;    }
+}
+
+/* Plane trail draw-in */
+@keyframes dash-draw {
+  from { stroke-dashoffset: 800; }
+  to   { stroke-dashoffset: 0;   }
 }

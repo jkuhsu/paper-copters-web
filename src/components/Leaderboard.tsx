@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, animate } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import type { ClassScore } from '@/lib/sheets';
 import { LoadingScreen } from './LoadingScreen';
 
@@ -30,250 +31,161 @@ function Counter({ target, delay = 0 }: { target: number; delay?: number }) {
   return <>{value.toLocaleString()}</>;
 }
 
-// ── SVG mascots ────────────────────────────────────────────────────────────
+// ── Mascot placeholder circle (PNG goes here later) ────────────────────────
 
-function MascotStar() {
+function MascotCircle() {
   return (
-    <svg viewBox="0 0 80 80" width="72" height="72" aria-hidden>
-      <polygon points="40,4 50,30 78,30 56,48 64,76 40,60 16,76 24,48 2,30 30,30"
-        fill="#F9C846" stroke="#E8A800" strokeWidth="1.5" strokeLinejoin="round" />
-      <ellipse cx="27" cy="47" rx="6" ry="4" fill="#FFB347" opacity="0.4" />
-      <ellipse cx="53" cy="47" rx="6" ry="4" fill="#FFB347" opacity="0.4" />
-      <ellipse cx="31" cy="39" rx="4" ry="4.5" fill="#3D2B00" />
-      <ellipse cx="49" cy="39" rx="4" ry="4.5" fill="#3D2B00" />
-      <circle cx="32.5" cy="37.5" r="1.5" fill="#fff" />
-      <circle cx="50.5" cy="37.5" r="1.5" fill="#fff" />
-      <path d="M31 50 Q40 58 49 50" stroke="#3D2B00" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function MascotBunny() {
-  return (
-    <svg viewBox="0 0 80 90" width="72" height="78" aria-hidden>
-      <ellipse cx="24" cy="22" rx="10" ry="18" fill="#6aada8" />
-      <ellipse cx="56" cy="22" rx="10" ry="18" fill="#6aada8" />
-      <ellipse cx="24" cy="23" rx="5.5" ry="12" fill="#9dd4cf" opacity="0.6" />
-      <ellipse cx="56" cy="23" rx="5.5" ry="12" fill="#9dd4cf" opacity="0.6" />
-      <circle cx="40" cy="60" r="28" fill="#6aada8" />
-      <ellipse cx="25" cy="65" rx="7" ry="5" fill="#5a9990" opacity="0.5" />
-      <ellipse cx="55" cy="65" rx="7" ry="5" fill="#5a9990" opacity="0.5" />
-      <ellipse cx="31" cy="56" rx="5" ry="5.5" fill="#fff" />
-      <ellipse cx="49" cy="56" rx="5" ry="5.5" fill="#fff" />
-      <circle cx="32" cy="57" r="3" fill="#1a3a3a" />
-      <circle cx="50" cy="57" r="3" fill="#1a3a3a" />
-      <circle cx="33" cy="56" r="1.2" fill="#fff" />
-      <circle cx="51" cy="56" r="1.2" fill="#fff" />
-      <ellipse cx="40" cy="66" rx="3" ry="2" fill="#4a8880" />
-      <path d="M30 72 Q40 80 50 72" stroke="#fff" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function MascotOnigiri() {
-  return (
-    <svg viewBox="0 0 80 88" width="68" height="74" aria-hidden>
-      <path d="M14 84 Q10 28 40 6 Q70 28 66 84 Z" fill="#F4F4F2" stroke="#D8D8D5" strokeWidth="1.5" />
-      <path d="M14 84 Q10 55 18 36 Q22 50 20 84 Z" fill="#E8E8E5" opacity="0.5" />
-      <path d="M18 68 Q40 61 62 68 L62 83 Q40 77 18 83 Z" fill="#2C2C2A" />
-      <ellipse cx="24" cy="52" rx="6" ry="4" fill="#FFCBA4" opacity="0.5" />
-      <ellipse cx="56" cy="52" rx="6" ry="4" fill="#FFCBA4" opacity="0.5" />
-      <ellipse cx="30" cy="46" rx="4.5" ry="5" fill="#2C2C2A" />
-      <ellipse cx="50" cy="46" rx="4.5" ry="5" fill="#2C2C2A" />
-      <circle cx="31.5" cy="44.5" r="1.5" fill="#fff" />
-      <circle cx="51.5" cy="44.5" r="1.5" fill="#fff" />
-      <path d="M30 58 Q40 65 50 58" stroke="#2C2C2A" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-// ── Rich background: catkins, wind, leaves, sparkles, notes, planes ────────
-
-function CatkinBg({ size }: { size: number }) {
-  return (
-    <svg width={15 * size} height={24 * size} viewBox="0 0 15 24" fill="none" aria-hidden>
-      <ellipse cx="7.5" cy="8" rx="6.5" ry="8" fill="rgba(200,235,255,0.65)" />
-      <ellipse cx="7.5" cy="8" rx="3.5" ry="4.5" fill="rgba(230,248,255,0.45)" />
-      <line x1="7.5" y1="16" x2="7.5" y2="24" stroke="rgba(150,200,230,0.45)" strokeWidth="1.1" />
-      <line x1="7.5" y1="19" x2="4.5" y2="23" stroke="rgba(150,200,230,0.3)" strokeWidth="0.8" />
-      <line x1="7.5" y1="22" x2="10.5" y2="24" stroke="rgba(150,200,230,0.3)" strokeWidth="0.8" />
-    </svg>
-  );
-}
-
-function WindLine({ width, opacity }: { width: number; opacity: number }) {
-  return (
-    <svg width={width} height={16} viewBox={`0 0 ${width} 16`} fill="none" aria-hidden>
-      <path
-        d={`M4 8 Q${width * 0.3} 2 ${width * 0.55} 8 Q${width * 0.8} 14 ${width - 4} 8`}
-        stroke={`rgba(140,195,225,${opacity})`}
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function WillowLeaf({ size, rotate }: { size: number; rotate: number }) {
-  return (
-    <svg width={7 * size} height={22 * size} viewBox="0 0 7 22" fill="none"
-      style={{ transform: `rotate(${rotate}deg)` }} aria-hidden>
-      <ellipse cx="3.5" cy="11" rx="3" ry="10.5" fill="rgba(130,185,140,0.45)" />
-      <line x1="3.5" y1="1" x2="3.5" y2="21" stroke="rgba(100,160,110,0.3)" strokeWidth="0.8" />
-    </svg>
-  );
-}
-
-function Sparkle({ size }: { size: number }) {
-  return (
-    <svg width={16 * size} height={16 * size} viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d="M8 1 L9.2 6.8 L15 8 L9.2 9.2 L8 15 L6.8 9.2 L1 8 L6.8 6.8 Z"
-        fill="rgba(180,225,250,0.8)" />
-    </svg>
-  );
-}
-
-// Hardcoded layout to avoid SSR mismatch
-const BG_CATKINS = [
-  { x: 6,  y: 6,  delay: 0.0, s: 1.0 }, { x: 24, y: 3,  delay: 1.5, s: 0.75 },
-  { x: 58, y: 7,  delay: 0.8, s: 1.1 }, { x: 80, y: 5,  delay: 2.3, s: 0.85 },
-  { x: 14, y: 38, delay: 2.0, s: 0.9 }, { x: 89, y: 33, delay: 0.5, s: 0.8 },
-  { x: 44, y: 62, delay: 2.9, s: 1.05 },{ x: 70, y: 58, delay: 1.7, s: 0.7 },
-  { x: 3,  y: 55, delay: 3.4, s: 0.95 },{ x: 95, y: 70, delay: 1.2, s: 0.75 },
-];
-const BG_WINDS = [
-  { x: 2,  y: 18, delay: 0.6, w: 68, op: 0.35 },
-  { x: 62, y: 44, delay: 2.0, w: 54, op: 0.28 },
-  { x: 72, y: 14, delay: 3.2, w: 60, op: 0.32 },
-  { x: 1,  y: 72, delay: 1.4, w: 72, op: 0.25 },
-  { x: 50, y: 28, delay: 2.7, w: 50, op: 0.3  },
-];
-const BG_LEAVES = [
-  { x: 91, y: 22, delay: 1.1, s: 1.0, r: -20 },
-  { x: 2,  y: 48, delay: 2.6, s: 0.9, r: 15  },
-  { x: 52, y: 80, delay: 0.7, s: 0.85,r: -8  },
-  { x: 72, y: 82, delay: 3.6, s: 1.0, r: 25  },
-  { x: 18, y: 16, delay: 1.9, s: 0.8, r: -15 },
-  { x: 38, y: 90, delay: 3.0, s: 0.9, r: 10  },
-];
-const BG_SPARKLES = [
-  { x: 36, y: 14, delay: 0.9, s: 1.0 }, { x: 83, y: 67, delay: 2.1, s: 0.8 },
-  { x: 11, y: 56, delay: 1.5, s: 0.9 }, { x: 64, y: 26, delay: 3.3, s: 0.75 },
-  { x: 48, y: 46, delay: 2.5, s: 0.7 },
-];
-const BG_NOTES = [
-  { x: 4,  y: 8,  delay: 0,   s: 1.0,  char: '♪' },
-  { x: 88, y: 12, delay: 1.3, s: 0.8,  char: '♫' },
-  { x: 12, y: 40, delay: 0.7, s: 0.7,  char: '♩' },
-  { x: 82, y: 50, delay: 2.1, s: 1.1,  char: '♬' },
-  { x: 90, y: 78, delay: 0.4, s: 0.75, char: '♩' },
-  { x: 45, y: 3,  delay: 2.8, s: 0.6,  char: '♫' },
-];
-
-function FloatingBackground() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      {/* Catkins — gentle side drift */}
-      {BG_CATKINS.map((c, i) => (
-        <motion.div key={`ck${i}`} className="absolute"
-          style={{ left: `${c.x}%`, top: `${c.y}%` }}
-          animate={{ y: [0, -12, 0], x: [0, i % 2 ? 8 : -8, 0], rotate: [0, i % 2 ? 10 : -10, 0] }}
-          transition={{ duration: 5 + i * 0.3, delay: c.delay, repeat: Infinity, ease: 'easeInOut' }}>
-          <CatkinBg size={c.s} />
-        </motion.div>
-      ))}
-
-      {/* Wind lines — sweep across then fade */}
-      {BG_WINDS.map((w, i) => (
-        <motion.div key={`wl${i}`} className="absolute"
-          style={{ left: `${w.x}%`, top: `${w.y}%` }}
-          animate={{ x: [0, 18, 0], opacity: [0, w.op, 0] }}
-          transition={{ duration: 3.5 + i * 0.4, delay: w.delay, repeat: Infinity, ease: 'easeInOut' }}>
-          <WindLine width={w.w} opacity={w.op} />
-        </motion.div>
-      ))}
-
-      {/* Willow leaves — sway */}
-      {BG_LEAVES.map((l, i) => (
-        <motion.div key={`lf${i}`} className="absolute"
-          style={{ left: `${l.x}%`, top: `${l.y}%` }}
-          animate={{ rotate: [l.r - 8, l.r + 8, l.r - 8], y: [0, -6, 0] }}
-          transition={{ duration: 4 + i * 0.35, delay: l.delay, repeat: Infinity, ease: 'easeInOut' }}>
-          <WillowLeaf size={l.s} rotate={l.r} />
-        </motion.div>
-      ))}
-
-      {/* Sparkles — pulse */}
-      {BG_SPARKLES.map((sp, i) => (
-        <motion.div key={`sp${i}`} className="absolute"
-          style={{ left: `${sp.x}%`, top: `${sp.y}%` }}
-          animate={{ scale: [0.6, 1.2, 0.6], opacity: [0.2, 0.8, 0.2], rotate: [0, 45, 0] }}
-          transition={{ duration: 2.8 + i * 0.4, delay: sp.delay, repeat: Infinity, ease: 'easeInOut' }}>
-          <Sparkle size={sp.s} />
-        </motion.div>
-      ))}
-
-      {/* Music notes — float */}
-      {BG_NOTES.map((n, i) => (
-        <motion.div key={`nt${i}`} className="absolute"
-          style={{ left: `${n.x}%`, top: `${n.y}%` }}
-          animate={{ y: [0, -14, 0], opacity: [0.2, 0.5, 0.2] }}
-          transition={{ duration: 3.5 + i * 0.5, delay: n.delay, repeat: Infinity, ease: 'easeInOut' }}>
-          <span className="text-blue-300/70 font-light select-none" style={{ fontSize: `${20 * n.s}px` }}>
-            {n.char}
-          </span>
-        </motion.div>
-      ))}
-
-      {/* Paper planes */}
-      {[{ x: 70, y: 27, delay: 1.9 }, { x: 8, y: 22, delay: 3.1 }].map((p, i) => (
-        <motion.div key={`pp${i}`} className="absolute"
-          style={{ left: `${p.x}%`, top: `${p.y}%` }}
-          animate={{ y: [0, -12, 0], x: [0, i % 2 ? 6 : -6, 0] }}
-          transition={{ duration: 4.5 + i * 0.5, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-              stroke="rgba(90,160,210,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
-      ))}
+    <div
+      className="rounded-full border-[2.5px] border-dashed border-white/50 bg-white/15 flex items-center justify-center mb-2 drop-shadow"
+      style={{ width: 72, height: 72 }}
+    >
+      <div className="w-9 h-9 rounded-full bg-white/20" />
     </div>
   );
 }
 
-// ── Podium water-fill animation ────────────────────────────────────────────
-// Order in render: [2nd, 1st, 3rd]  |  Rise order: No.1 → No.2 → No.3
+// ── Background: falling catkins + wind + sparkles + plane with trail ───────
+
+// Catkin fall items — hardcoded to avoid SSR hydration mismatch
+const CATKINS_BG = [
+  { x: 5,  dur: 9.5,  delay: 0.0,  src: '/catkin-green.svg', w: 34, h: 54 },
+  { x: 16, dur: 11.0, delay: 2.8,  src: '/catkin-pale.svg',  w: 28, h: 44 },
+  { x: 28, dur: 10.2, delay: 1.3,  src: '/catkin-green.svg', w: 38, h: 60 },
+  { x: 40, dur: 12.0, delay: 4.2,  src: '/catkin-pale.svg',  w: 26, h: 42 },
+  { x: 52, dur: 9.0,  delay: 0.9,  src: '/catkin-green.svg', w: 32, h: 50 },
+  { x: 63, dur: 11.5, delay: 3.5,  src: '/catkin-pale.svg',  w: 30, h: 48 },
+  { x: 75, dur: 10.5, delay: 1.7,  src: '/catkin-green.svg', w: 36, h: 56 },
+  { x: 86, dur: 12.5, delay: 5.2,  src: '/catkin-pale.svg',  w: 24, h: 38 },
+  { x: 10, dur: 10.8, delay: 6.8,  src: '/catkin-pale.svg',  w: 30, h: 48 },
+  { x: 47, dur: 11.2, delay: 7.3,  src: '/catkin-green.svg', w: 28, h: 44 },
+  { x: 70, dur: 9.8,  delay: 4.0,  src: '/catkin-pale.svg',  w: 34, h: 54 },
+  { x: 33, dur: 12.2, delay: 5.8,  src: '/catkin-green.svg', w: 26, h: 42 },
+  { x: 91, dur: 10.0, delay: 2.2,  src: '/catkin-pale.svg',  w: 32, h: 50 },
+  { x: 22, dur: 11.8, delay: 8.5,  src: '/catkin-green.svg', w: 28, h: 44 },
+];
+
+// Sparkle items
+const SPARKLES_BG = [
+  { x: 36, y: 14, delay: 0.9 }, { x: 83, y: 67, delay: 2.1 },
+  { x: 11, y: 56, delay: 1.5 }, { x: 64, y: 26, delay: 3.3 },
+  { x: 48, y: 46, delay: 2.5 }, { x: 7,  y: 80, delay: 4.0 },
+];
+
+// The looping flight path (SVG coords in 0 0 390 844 space)
+const PLANE_PATH =
+  'M -70 422 C 60 170 210 110 295 200 C 380 290 400 440 315 370 C 230 300 80 318 -70 422';
+
+function FloatingBackground() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+
+      {/* Falling catkins — CSS animation */}
+      {CATKINS_BG.map((c, i) => (
+        <div
+          key={i}
+          className="absolute top-0"
+          style={{
+            left: `${c.x}%`,
+            animationName: 'fall-leaf',
+            animationDuration: `${c.dur}s`,
+            animationDelay: `${c.delay}s`,
+            animationTimingFunction: 'ease-in-out',
+            animationIterationCount: 'infinite',
+            animationFillMode: 'both',
+          }}
+        >
+          <Image src={c.src} alt="" width={c.w} height={c.h} style={{ opacity: 0.75 }} aria-hidden />
+        </div>
+      ))}
+
+      {/* Sparkles */}
+      {SPARKLES_BG.map((sp, i) => (
+        <motion.div
+          key={`sp${i}`}
+          className="absolute"
+          style={{ left: `${sp.x}%`, top: `${sp.y}%` }}
+          animate={{ scale: [0.5, 1.2, 0.5], opacity: [0.1, 0.6, 0.1], rotate: [0, 45, 0] }}
+          transition={{ duration: 2.8 + i * 0.4, delay: sp.delay, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+            <path d="M8 1 L9.2 6.8 L15 8 L9.2 9.2 L8 15 L6.8 9.2 L1 8 L6.8 6.8 Z"
+              fill="rgba(160,220,170,0.9)" />
+          </svg>
+        </motion.div>
+      ))}
+
+      {/* Paper plane with looping path + dashed trail */}
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox="0 0 390 844"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        {/* Dashed trail path */}
+        <path
+          d={PLANE_PATH}
+          fill="none"
+          stroke="rgba(45,111,165,0.18)"
+          strokeWidth="1.8"
+          strokeDasharray="7 5"
+          strokeLinecap="round"
+        />
+
+        {/* Animated plane group */}
+        <g>
+          <animateMotion
+            path={PLANE_PATH}
+            dur="14s"
+            repeatCount="indefinite"
+            begin="2s"
+            rotate="auto"
+          />
+          <animate
+            attributeName="opacity"
+            values="0;0;1;1;1;1;0;0"
+            keyTimes="0;0.04;0.1;0.4;0.85;0.92;0.97;1"
+            dur="14s"
+            repeatCount="indefinite"
+            begin="2s"
+          />
+          {/* Paper plane shape */}
+          <path
+            d="M 10 0 L -5 -4 L -3 0 L -5 4 Z"
+            fill="rgba(45,111,165,0.75)"
+            stroke="rgba(45,111,165,0.4)"
+            strokeWidth="0.5"
+          />
+        </g>
+      </svg>
+
+    </div>
+  );
+}
+
+// ── Podium config ──────────────────────────────────────────────────────────
 
 const PODIUM = [
-  { place: 2, label: 'No. 2', from: '#7aac6e', to: '#4e8844', height: 176, offset: 'mt-8',  mascot: <MascotBunny />,   riseDelay: 0.45 },
-  { place: 1, label: 'No. 1', from: '#5a9d98', to: '#356e6a', height: 224, offset: 'mt-0',  mascot: <MascotStar />,    riseDelay: 0.0  },
-  { place: 3, label: 'No. 3', from: '#7895c8', to: '#4d68a4', height: 144, offset: 'mt-14', mascot: <MascotOnigiri />, riseDelay: 0.9  },
+  { place: 2, label: 'No. 2', from: '#7aac6e', to: '#4e8844', height: 176, offset: 'mt-8',  riseDelay: 0.45 },
+  { place: 1, label: 'No. 1', from: '#5a9d98', to: '#356e6a', height: 224, offset: 'mt-0',  riseDelay: 0.0  },
+  { place: 3, label: 'No. 3', from: '#7895c8', to: '#4d68a4', height: 144, offset: 'mt-14', riseDelay: 0.9  },
 ];
 
 function PodiumCard({
-  place, label, from, to, height, offset, mascot, riseDelay, entry,
+  place, label, from, to, height, offset, riseDelay, entry,
 }: (typeof PODIUM)[number] & { entry?: ClassScore }) {
   const name = entry ? displayName(entry.className) : '—';
 
   return (
     <div className={`flex flex-col items-center ${offset}`}>
-      {/* Floating mascot */}
-      <motion.div
-        className="mb-2 drop-shadow-md"
-        animate={{ y: [0, -7, 0] }}
-        transition={{ duration: 2.4, delay: riseDelay + 1.2, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        {mascot}
-      </motion.div>
+      {/* Mascot placeholder — replace with PNG later */}
+      <MascotCircle />
 
       {/* Card */}
       <div
         className="relative w-[88px] sm:w-[104px] rounded-2xl overflow-hidden shadow-lg"
         style={{ height }}
       >
-        {/* Ghost container (visible before fill) */}
-        <div className="absolute inset-0 rounded-2xl bg-slate-200/25" />
+        {/* Ghost (visible before fill) */}
+        <div className="absolute inset-0 rounded-2xl bg-slate-200/20" />
 
         {/* Water fill — rises from bottom */}
         <motion.div
@@ -282,29 +194,20 @@ function PodiumCard({
           animate={{ height: '100%' }}
           transition={{ duration: 1.05, delay: riseDelay, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          {/* Base color */}
+          {/* Base gradient */}
           <div className="absolute inset-0" style={{ background: `linear-gradient(175deg, ${from}, ${to})` }} />
-          {/* Water-surface shimmer at the top edge */}
+          {/* Water surface shimmer */}
           <motion.div
             className="absolute top-0 left-0 right-0 h-4 blur-[3px]"
             style={{ background: 'rgba(255,255,255,0.28)' }}
             animate={{ opacity: [0.5, 0.9, 0.5] }}
             transition={{ duration: 1.2, repeat: Infinity }}
           />
-          {/* Shine */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/22 to-transparent" />
-          {/* Ruled-line texture */}
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'repeating-linear-gradient(0deg,transparent,transparent 15px,rgba(255,255,255,0.08) 15px,rgba(255,255,255,0.09) 16px)',
-          }} />
-          {/* Paper-note decorations */}
-          {[{ l: '14%', t: '14%', r: -8 }, { l: '70%', t: '22%', r: 7 }, { l: '18%', t: '68%', r: 5 }, { l: '66%', t: '74%', r: -6 }].map((d, i) => (
-            <div key={i} className="absolute w-4 h-5 rounded-sm bg-white/10"
-              style={{ left: d.l, top: d.t, transform: `rotate(${d.r}deg)` }} />
-          ))}
+          {/* Subtle shine only — no ruled lines, no paper rectangles */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/18 to-transparent" />
 
-          {/* Place label — appears once fill reaches the top area */}
-          <span className="absolute top-2.5 left-3 text-white/65 text-[10px] font-bold tracking-widest z-10">
+          {/* Place label */}
+          <span className="absolute top-2.5 left-3 text-white/60 text-[10px] font-bold tracking-widest z-10">
             {label}
           </span>
         </motion.div>
@@ -398,11 +301,20 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
 
   return (
     <motion.div
-      className="relative min-h-screen bg-gradient-to-b from-[#cee8f5] via-[#e4f2f8] to-[#eef3f8] overflow-x-hidden"
+      className="relative min-h-screen overflow-x-hidden"
+      style={{
+        backgroundImage: 'url(/bg.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center top',
+        backgroundAttachment: 'fixed',
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+      {/* Soft overlay so text stays readable over the vintage texture */}
+      <div className="absolute inset-0 bg-white/55 backdrop-blur-[2px]" />
+
       <FloatingBackground />
 
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 py-10 sm:py-14">
@@ -444,7 +356,7 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
           </motion.div>
         )}
 
-        {/* Podium — No.1 fills first, then No.2, then No.3 */}
+        {/* Podium */}
         {rankings.length > 0 && (
           <div className="flex items-end justify-center gap-2 sm:gap-4 mb-10 sm:mb-14">
             {top3.map((cfg) => (
@@ -456,7 +368,7 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
         {/* Rank list — scroll-triggered */}
         {rest.length > 0 && (
           <motion.div
-            className="bg-white/65 backdrop-blur-lg rounded-3xl shadow-md overflow-hidden border border-white/60"
+            className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-md overflow-hidden border border-white/60"
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
@@ -493,7 +405,7 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
         <InstagramFooter />
 
         <motion.p
-          className="text-center text-slate-300 text-xs mb-4"
+          className="text-center text-slate-400 text-xs mb-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
