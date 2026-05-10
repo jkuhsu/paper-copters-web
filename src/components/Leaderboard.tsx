@@ -71,46 +71,6 @@ const SPARKLES_BG = [
   { x: 48, y: 46, delay: 2.5 }, { x: 7,  y: 80, delay: 4.0 },
 ];
 
-// Paper plane trajectories — hardcoded for SSR safety
-const PLANES = [
-  { top: '22%', keyframe: 'fly-plane-ltr', dur: 26, delay: 0  },
-  { top: '58%', keyframe: 'fly-plane-rtl', dur: 30, delay: 9  },
-  { top: '40%', keyframe: 'fly-plane-ltr', dur: 23, delay: 18 },
-];
-
-function PaperPlanes() {
-  return (
-    <>
-      {PLANES.map((p, i) => (
-        <div
-          key={i}
-          className="absolute"
-          style={{
-            top: p.top,
-            left: 0,
-            animationName: `${p.keyframe}, fly-plane-op`,
-            animationDuration: `${p.dur}s, ${p.dur}s`,
-            animationDelay: `${p.delay}s, ${p.delay}s`,
-            animationTimingFunction: 'linear, linear',
-            animationIterationCount: 'infinite, infinite',
-            animationFillMode: 'both, both',
-          }}
-        >
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-              stroke="rgba(45,100,60,0.72)"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-      ))}
-    </>
-  );
-}
-
 function FloatingBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
@@ -149,9 +109,6 @@ function FloatingBackground() {
           </svg>
         </motion.div>
       ))}
-
-      {/* Floating paper planes — slow→fast→slow easing, 1-3 visible at a time */}
-      <PaperPlanes />
 
     </div>
   );
@@ -248,7 +205,7 @@ function PodiumCard({
 function InstagramFooter() {
   return (
     <motion.div
-      className="mt-10 mb-8 px-1"
+      className="mt-6 mb-4 px-1"
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
@@ -302,20 +259,10 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
   return (
     <motion.div
       className="relative min-h-screen overflow-x-hidden"
-      style={{
-        backgroundImage: 'url(/bg.jpg)',
-        backgroundSize: '100% auto',
-        backgroundPosition: 'center top',
-        backgroundRepeat: 'no-repeat',
-        backgroundColor: '#d2cbc2',
-      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Soft overlay so text stays readable over the vintage texture */}
-      <div className="absolute inset-0 bg-white/20" />
-
       <FloatingBackground />
 
       <div className="relative z-10 w-full max-w-lg mx-auto px-4 pt-24 pb-10 sm:pt-28 sm:pb-14">
@@ -330,20 +277,20 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
           <div className="inline-flex items-center justify-center gap-3 mb-2">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-                stroke="#2a4d2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                stroke="#5ab870" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <h1
-              className="text-[1.75rem] sm:text-[2.25rem] font-black text-[#1e3d22] tracking-wide leading-none"
+              className="text-[1.75rem] sm:text-[2.25rem] font-black text-[#5ab870] tracking-wide leading-none"
               style={{ fontFamily: 'var(--font-serif)' }}
             >
               柳絮班級排行榜
             </h1>
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-                stroke="#2a4d2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                stroke="#5ab870" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <p className="text-[#5a7a5a] text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase">
+          <p className="text-[#8aca8a] text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase">
             Class Ranking Board
           </p>
         </motion.header>
@@ -369,11 +316,11 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
         {/* Rank list — scroll-triggered */}
         {rest.length > 0 && (
           <motion.div
-            className="rounded-3xl overflow-hidden border border-white/35"
+            className="rounded-3xl overflow-hidden border border-white/60"
             style={{
-              background: 'rgba(255,255,255,0.10)',
-              backdropFilter: 'blur(24px) saturate(160%)',
-              WebkitBackdropFilter: 'blur(24px) saturate(160%)',
+              background: 'rgba(255,255,255,0.72)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
               boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
             }}
             initial={{ opacity: 0, y: 36 }}
@@ -385,8 +332,8 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
               <motion.div
                 key={item.className}
                 className={`flex items-center gap-4 px-5 py-4 transition-colors ${
-                  idx < rest.length - 1 ? 'border-b border-white/20' : ''
-                } hover:bg-white/20`}
+                  idx < rest.length - 1 ? 'border-b border-slate-100' : ''
+                } hover:bg-sky-50/60`}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-30px' }}
@@ -417,7 +364,7 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          資料每 60 秒自動更新
+          重整網頁之資訊均為一分鐘內之資料
         </motion.p>
       </div>
     </motion.div>
@@ -430,6 +377,19 @@ export function Leaderboard({ rankings, error }: { rankings: ClassScore[]; error
   const [loaded, setLoaded] = useState(false);
   return (
     <>
+      {/* Fixed background — position:fixed avoids iOS background-attachment:fixed bug.
+          Stays behind LoadingScreen (z-50) and creates true parallax on all devices. */}
+      <div
+        className="fixed inset-0 -z-10"
+        style={{
+          backgroundImage: 'url(/bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'top center',
+          backgroundColor: '#d2cbc2',
+        }}
+      />
+      <div className="fixed inset-0 -z-10 bg-white/20" />
+
       <AnimatePresence>
         {!loaded && <LoadingScreen key="loading" onComplete={() => setLoaded(true)} />}
       </AnimatePresence>
