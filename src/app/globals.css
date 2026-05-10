@@ -26,8 +26,23 @@ body {
   100% { transform: translateY(112vh) translateX(0px)  rotate(-5deg);  opacity: 0;    }
 }
 
-/* Plane trail draw-in */
-@keyframes dash-draw {
-  from { stroke-dashoffset: 800; }
-  to   { stroke-dashoffset: 0;   }
+/* Paper plane flight — left to right */
+@keyframes fly-plane-ltr {
+  0%   { transform: translateX(-12vw) rotate(45deg); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  70%  { transform: translateX(112vw)  rotate(45deg); animation-timing-function: steps(1, end); }
+  100% { transform: translateX(-12vw)  rotate(45deg); }
+}
+/* Paper plane flight — right to left */
+@keyframes fly-plane-rtl {
+  0%   { transform: translateX(112vw) rotate(225deg); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  70%  { transform: translateX(-12vw)  rotate(225deg); animation-timing-function: steps(1, end); }
+  100% { transform: translateX(112vw)  rotate(225deg); }
+}
+/* Shared opacity envelope: fade-in → cruise → fade-out → invisible pause */
+@keyframes fly-plane-op {
+  0%   { opacity: 0; }
+  7%   { opacity: 0.72; }
+  63%  { opacity: 0.72; }
+  70%  { opacity: 0; }
+  100% { opacity: 0; }
 }

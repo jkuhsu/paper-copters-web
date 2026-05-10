@@ -44,7 +44,7 @@ function MascotCircle() {
   );
 }
 
-// ── Background: falling catkins + wind + sparkles + plane with trail ───────
+// ── Background: falling catkins + sparkles + floating planes ──────────────
 
 // Catkin fall items — hardcoded to avoid SSR hydration mismatch
 const CATKINS_BG = [
@@ -71,9 +71,45 @@ const SPARKLES_BG = [
   { x: 48, y: 46, delay: 2.5 }, { x: 7,  y: 80, delay: 4.0 },
 ];
 
-// The looping flight path (SVG coords in 0 0 390 844 space)
-const PLANE_PATH =
-  'M -70 422 C 60 170 210 110 295 200 C 380 290 400 440 315 370 C 230 300 80 318 -70 422';
+// Paper plane trajectories — hardcoded for SSR safety
+const PLANES = [
+  { top: '22%', keyframe: 'fly-plane-ltr', dur: 26, delay: 0  },
+  { top: '58%', keyframe: 'fly-plane-rtl', dur: 30, delay: 9  },
+  { top: '40%', keyframe: 'fly-plane-ltr', dur: 23, delay: 18 },
+];
+
+function PaperPlanes() {
+  return (
+    <>
+      {PLANES.map((p, i) => (
+        <div
+          key={i}
+          className="absolute"
+          style={{
+            top: p.top,
+            left: 0,
+            animationName: `${p.keyframe}, fly-plane-op`,
+            animationDuration: `${p.dur}s, ${p.dur}s`,
+            animationDelay: `${p.delay}s, ${p.delay}s`,
+            animationTimingFunction: 'linear, linear',
+            animationIterationCount: 'infinite, infinite',
+            animationFillMode: 'both, both',
+          }}
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path
+              d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
+              stroke="rgba(45,111,165,0.75)"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      ))}
+    </>
+  );
+}
 
 function FloatingBackground() {
   return (
@@ -94,7 +130,7 @@ function FloatingBackground() {
             animationFillMode: 'both',
           }}
         >
-          <Image src={c.src} alt="" width={c.w} height={c.h} style={{ opacity: 0.75 }} aria-hidden />
+          <Image src={c.src} alt="" width={c.w} height={c.h} style={{ opacity: 0.88 }} aria-hidden />
         </div>
       ))}
 
@@ -114,48 +150,8 @@ function FloatingBackground() {
         </motion.div>
       ))}
 
-      {/* Paper plane with looping path + dashed trail */}
-      <svg
-        className="absolute inset-0 w-full h-full"
-        viewBox="0 0 390 844"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        {/* Dashed trail path */}
-        <path
-          d={PLANE_PATH}
-          fill="none"
-          stroke="rgba(45,111,165,0.18)"
-          strokeWidth="1.8"
-          strokeDasharray="7 5"
-          strokeLinecap="round"
-        />
-
-        {/* Animated plane group */}
-        <g>
-          <animateMotion
-            path={PLANE_PATH}
-            dur="14s"
-            repeatCount="indefinite"
-            begin="2s"
-            rotate="auto"
-          />
-          <animate
-            attributeName="opacity"
-            values="0;0;1;1;1;1;0;0"
-            keyTimes="0;0.04;0.1;0.4;0.85;0.92;0.97;1"
-            dur="14s"
-            repeatCount="indefinite"
-            begin="2s"
-          />
-          {/* Paper plane shape */}
-          <path
-            d="M 10 0 L -5 -4 L -3 0 L -5 4 Z"
-            fill="rgba(45,111,165,0.75)"
-            stroke="rgba(45,111,165,0.4)"
-            strokeWidth="0.5"
-          />
-        </g>
-      </svg>
+      {/* Floating paper planes — slow→fast→slow easing, 1-3 visible at a time */}
+      <PaperPlanes />
 
     </div>
   );
@@ -179,32 +175,36 @@ function PodiumCard({
       {/* Mascot placeholder — replace with PNG later */}
       <MascotCircle />
 
-      {/* Card */}
+      {/* Card — iOS Liquid Glass */}
       <div
-        className="relative w-[88px] sm:w-[104px] rounded-2xl overflow-hidden shadow-lg"
-        style={{ height }}
+        className="relative w-[88px] sm:w-[104px] rounded-2xl overflow-hidden"
+        style={{
+          height,
+          background: 'rgba(255,255,255,0.10)',
+          backdropFilter: 'blur(18px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(18px) saturate(180%)',
+          border: '1.5px solid rgba(255,255,255,0.55)',
+          boxShadow: 'inset 0 1.5px 0 rgba(255,255,255,0.75), inset 0 -1px 0 rgba(0,0,0,0.04), 0 8px 30px rgba(0,0,0,0.22)',
+        }}
       >
-        {/* Ghost (visible before fill) */}
-        <div className="absolute inset-0 rounded-2xl bg-slate-200/20" />
-
-        {/* Water fill — rises from bottom */}
+        {/* Water fill — rises from bottom, semi-transparent tint */}
         <motion.div
           className="absolute bottom-0 left-0 right-0 rounded-2xl overflow-hidden"
           initial={{ height: 0 }}
           animate={{ height: '100%' }}
           transition={{ duration: 1.05, delay: riseDelay, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          {/* Base gradient */}
-          <div className="absolute inset-0" style={{ background: `linear-gradient(175deg, ${from}, ${to})` }} />
+          {/* Tinted glass fill */}
+          <div className="absolute inset-0" style={{ background: `linear-gradient(175deg, ${from}CC, ${to}99)` }} />
           {/* Water surface shimmer */}
           <motion.div
             className="absolute top-0 left-0 right-0 h-4 blur-[3px]"
-            style={{ background: 'rgba(255,255,255,0.28)' }}
+            style={{ background: 'rgba(255,255,255,0.35)' }}
             animate={{ opacity: [0.5, 0.9, 0.5] }}
             transition={{ duration: 1.2, repeat: Infinity }}
           />
-          {/* Subtle shine only — no ruled lines, no paper rectangles */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/18 to-transparent" />
+          {/* Inner top highlight */}
+          <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent" />
 
           {/* Place label */}
           <span className="absolute top-2.5 left-3 text-white/60 text-[10px] font-bold tracking-widest z-10">
@@ -313,7 +313,7 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
       transition={{ duration: 0.5 }}
     >
       {/* Soft overlay so text stays readable over the vintage texture */}
-      <div className="absolute inset-0 bg-white/55 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
 
       <FloatingBackground />
 
@@ -368,7 +368,13 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
         {/* Rank list — scroll-triggered */}
         {rest.length > 0 && (
           <motion.div
-            className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-md overflow-hidden border border-white/60"
+            className="rounded-3xl overflow-hidden border border-white/40"
+            style={{
+              background: 'rgba(255,255,255,0.14)',
+              backdropFilter: 'blur(24px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+              boxShadow: 'inset 0 1.5px 0 rgba(255,255,255,0.72), 0 8px 32px rgba(0,0,0,0.13)',
+            }}
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
@@ -378,8 +384,8 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
               <motion.div
                 key={item.className}
                 className={`flex items-center gap-4 px-5 py-4 transition-colors ${
-                  idx < rest.length - 1 ? 'border-b border-slate-100/80' : ''
-                } hover:bg-sky-50/60`}
+                  idx < rest.length - 1 ? 'border-b border-white/20' : ''
+                } hover:bg-white/20`}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-30px' }}
