@@ -1,22 +1,28 @@
 import type { Metadata } from 'next';
-import { Noto_Sans_TC } from 'next/font/google';
+import { Noto_Sans_TC, Noto_Serif_TC } from 'next/font/google';
 import './globals.css';
 
-const notoSansTC = Noto_Sans_TC({
+const notoSans = Noto_Sans_TC({
   subsets: ['latin'],
   weight: ['400', '500', '700', '900'],
-  variable: '--font-noto',
+  variable: '--font-sans',
+});
+
+const notoSerif = Noto_Serif_TC({
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '900'],
+  variable: '--font-serif',
 });
 
 export const metadata: Metadata = {
   title: '柳絮班級排行榜',
-  description: '柳絮紙飛機回收活動班級積分排行榜',
+  description: '松山高中班級柳絮比賽積分排行榜',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-TW" className={`${notoSansTC.variable} h-full antialiased`}>
-      <body className={`min-h-full flex flex-col ${notoSansTC.className}`}>{children}</body>
+    <html lang="zh-TW" className={`${notoSans.variable} ${notoSerif.variable} h-full antialiased`}>
+      <body className={`min-h-full flex flex-col ${notoSans.className}`}>{children}</body>
     </html>
   );
 }
