@@ -265,7 +265,7 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
     >
       <FloatingBackground />
 
-      <div className="relative z-10 w-full max-w-lg mx-auto px-4 pt-24 pb-10 sm:pt-28 sm:pb-14">
+      <div className="relative z-10 w-full max-w-lg mx-auto px-6 pt-24 pb-10 sm:pt-28 sm:pb-14">
 
         {/* Title */}
         <motion.header
@@ -275,22 +275,28 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="inline-flex items-center justify-center gap-3 mb-2">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden
+              style={{ filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.5))' }}>
               <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-                stroke="#5ab870" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <h1
-              className="text-[1.75rem] sm:text-[2.25rem] font-black text-[#5ab870] tracking-wide leading-none"
-              style={{ fontFamily: 'var(--font-serif)' }}
+              className="text-[1.75rem] sm:text-[2.25rem] font-black text-white tracking-wide leading-none"
+              style={{
+                fontFamily: 'var(--font-serif)',
+                textShadow: '0 0 16px rgba(80,210,110,0.7), 0 1px 6px rgba(0,0,0,0.55)',
+              }}
             >
               柳絮班級排行榜
             </h1>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden
+              style={{ filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.5))' }}>
               <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-                stroke="#5ab870" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <p className="text-[#8aca8a] text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase">
+          <p className="text-white/70 text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase"
+            style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
             Class Ranking Board
           </p>
         </motion.header>
@@ -359,7 +365,7 @@ function LeaderboardContent({ rankings, error }: { rankings: ClassScore[]; error
         <InstagramFooter />
 
         <motion.p
-          className="text-center text-slate-400 text-xs mb-4"
+          className="text-center text-white/70 text-xs mb-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
