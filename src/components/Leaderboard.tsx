@@ -31,24 +31,6 @@ function Counter({ target, delay = 0 }: { target: number; delay?: number }) {
   return <>{value.toLocaleString()}</>;
 }
 
-// ── Mascot image ───────────────────────────────────────────────────────────
-
-function MascotCircle({ place }: { place: number }) {
-  return (
-    <div
-      className="rounded-full overflow-hidden mb-2 drop-shadow-lg border-2 border-white/60"
-      style={{ width: 72, height: 72 }}
-    >
-      <Image
-        src={`/mascot-${place}.png`}
-        alt={`No.${place} mascot`}
-        width={72}
-        height={72}
-        className="w-full h-full object-cover"
-      />
-    </div>
-  );
-}
 
 // ── Background: falling catkins + sparkles + floating planes ──────────────
 
@@ -135,20 +117,31 @@ function PodiumCard({
 
   return (
     <div className={`flex flex-col items-center ${offset}`}>
-      <MascotCircle place={place} />
 
-      {/* Card — iOS Liquid Glass */}
-      <div
-        className="relative w-[88px] sm:w-[104px] rounded-2xl overflow-hidden"
-        style={{
-          height,
-          background: 'rgba(255,255,255,0.10)',
-          backdropFilter: 'blur(18px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(18px) saturate(180%)',
-          border: '1.5px solid rgba(255,255,255,0.55)',
-          boxShadow: 'inset 0 1.5px 0 rgba(255,255,255,0.75), inset 0 -1px 0 rgba(0,0,0,0.04), 0 8px 30px rgba(0,0,0,0.22)',
-        }}
-      >
+      {/* Width-constrained column: mascot in flow + card, both exactly card-width */}
+      <div className="w-[88px] sm:w-[104px]">
+
+        {/* Mascot — normal flow, sits right above card with zero gap */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/mascot-${place}.png`}
+          alt=""
+          className="drop-shadow-lg"
+          style={{ width: '100%', height: 'auto', display: 'block' }}
+        />
+
+        {/* Card — iOS Liquid Glass, immediately below mascot */}
+        <div
+          className="relative w-full rounded-2xl overflow-hidden"
+          style={{
+            height,
+            background: 'rgba(255,255,255,0.10)',
+            backdropFilter: 'blur(18px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(18px) saturate(180%)',
+            border: '1.5px solid rgba(255,255,255,0.55)',
+            boxShadow: 'inset 0 1.5px 0 rgba(255,255,255,0.75), inset 0 -1px 0 rgba(0,0,0,0.04), 0 8px 30px rgba(0,0,0,0.22)',
+          }}
+        >
         {/* Water fill — rises from bottom, semi-transparent tint */}
         <motion.div
           className="absolute bottom-0 left-0 right-0 rounded-2xl overflow-hidden"
@@ -185,7 +178,8 @@ function PodiumCard({
             {name}
           </span>
         </motion.div>
-      </div>
+        </div>{/* end card */}
+      </div>{/* end width-column */}
 
       {/* Count */}
       <motion.p
