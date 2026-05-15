@@ -31,15 +31,21 @@ function Counter({ target, delay = 0 }: { target: number; delay?: number }) {
   return <>{value.toLocaleString()}</>;
 }
 
-// ── Mascot placeholder circle (PNG goes here later) ────────────────────────
+// ── Mascot image ───────────────────────────────────────────────────────────
 
-function MascotCircle() {
+function MascotCircle({ place }: { place: number }) {
   return (
     <div
-      className="rounded-full border-[2.5px] border-dashed border-white/50 bg-white/15 flex items-center justify-center mb-2 drop-shadow"
+      className="rounded-full overflow-hidden mb-2 drop-shadow-lg border-2 border-white/60"
       style={{ width: 72, height: 72 }}
     >
-      <div className="w-9 h-9 rounded-full bg-white/20" />
+      <Image
+        src={`/mascot-${place}.png`}
+        alt={`No.${place} mascot`}
+        width={72}
+        height={72}
+        className="w-full h-full object-cover"
+      />
     </div>
   );
 }
@@ -129,8 +135,7 @@ function PodiumCard({
 
   return (
     <div className={`flex flex-col items-center ${offset}`}>
-      {/* Mascot placeholder — replace with PNG later */}
-      <MascotCircle />
+      <MascotCircle place={place} />
 
       {/* Card — iOS Liquid Glass */}
       <div
